@@ -22,6 +22,20 @@ function wp_react_scripts() {
     wp_enqueue_style('wpreact-style', get_stylesheet_uri());
     wp_enqueue_style('style-css', get_template_directory_uri() . '/dist/css/style.min.css', false, filemtime(get_stylesheet_directory() . '/dist/css/style.min.css'));
     wp_enqueue_script('script-js', get_template_directory_uri() . '/dist/app.min.js', array('jquery'), filemtime(get_stylesheet_directory().'/dist/app.min.js'), true);
+    
+    $url = trailingslashit(home_url());
+    $path = trailingslashit(parse_url($url, PHP_URL_PATH));
+
+    wp_scripts()->add_data('script-js', 'data', sprintf('var WPReactSettings = %s;', wp_json_encode(
+        array(
+          'title' => get_bloginfo('name', 'display'),
+          'path' => $path,
+          'URL' => array(
+            'api' => esc_url_raw(get_rest_url(null, '/wp/v2')),
+            'root' => esc_url_raw($url),
+          )
+        )
+    )));
 }
 add_action('wp_enqueue_scripts', 'wp_react_scripts');
 
@@ -30,6 +44,10 @@ add_action('wp_enqueue_scripts', 'wp_react_scripts');
  */
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
-remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
-remove_action( 'admin_print_styles', 'print_emoji_styles' );
+remove_action('admin_print_scripts', 'print_emoji_detection_script');
+remove_action('admin_print_styles', 'print_emoji_styles');
+
+
+    
+
 
