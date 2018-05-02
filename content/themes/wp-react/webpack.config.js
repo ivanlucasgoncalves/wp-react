@@ -1,22 +1,24 @@
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var path = require('path');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const path = require('path');
 
 module.exports = {
-   entry: {
-       app: './src/index.js'
-   },
+   entry: ['./src/index.js', './src/Components/Style.scss'],
    output: {
        path: path.resolve(__dirname, 'dist'),
-       filename: 'app.js'
+       filename: 'app.min.js'
    },
    module: {
        rules: [
            {
                test: /\.scss$/,
                use: ExtractTextPlugin.extract({
-                   fallback: 'style-loader',
-                   use: ['css-loader','sass-loader'],
-                   publicPath: 'dist/css'
+                   fallback: ['style-loader'],
+                   use: [
+                    { loader: 'css-loader', options: { importLoaders: 1, minimize: true } },
+                    'sass-loader',
+                    'postcss-loader'
+                   ]
                })
            },
            {
@@ -38,8 +40,15 @@ module.exports = {
    },
    plugins: [
        new ExtractTextPlugin({
-           filename: "style.css",
-           allChunks: true
+         filename: "css/style.min.css",
+         allChunks: true
+       }),
+       new UglifyJsPlugin({
+         uglifyOptions: {
+           ie8: true,
+           safari10: true,
+           mangle: false
+         }
        })
    ]
 }

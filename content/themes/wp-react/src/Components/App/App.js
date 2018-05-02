@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 
 export default class App extends Component {
   render() {
     return (
       <div>
-        <h1>Ja<span>mm</span>ing</h1>
+        <Header />
+        <Footer />
       </div>
     );
   }
