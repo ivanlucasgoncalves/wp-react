@@ -1,5 +1,6 @@
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const LiveReloadPlugin = require('webpack-livereload-plugin');
 const path = require('path');
 
 module.exports = {
@@ -47,8 +48,13 @@ module.exports = {
          uglifyOptions: {
            ie8: true,
            safari10: true,
-           mangle: false
-         }
-       })
+           mangle: false,
+           output: {
+             comments: false
+           }
+         },
+         sourceMap: true
+       }),
+       new LiveReloadPlugin()
    ]
 }
