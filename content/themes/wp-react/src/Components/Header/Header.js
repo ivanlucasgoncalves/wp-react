@@ -7,12 +7,9 @@ export default class Header extends React.Component {
       <div>
         <p className="title">Header</p>
         <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/pages">Pages</Link>
-          </li>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/pages">Pages</Link></li>
+          <li><Link to="/blog">Blog</Link></li>
         </ul>
       </div>
     );

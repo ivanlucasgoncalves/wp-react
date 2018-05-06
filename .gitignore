@@ -12,6 +12,7 @@ package-lock.json# See https://help.github.com/ignore-files/ for more about igno
 # production
 .htaccess
 local-config.php
+/content/uploads
 /wp
 
 # misc
