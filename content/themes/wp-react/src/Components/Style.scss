@@ -70,9 +70,15 @@ h1{
   font-size: 62px;
   line-height: 72px;
 }
+main{
+  margin: 20px 0;
+  height: calc(100vh - 296px);
+}
 
 @import "./Header/Header";
 
 @import "./Arquive/Arquive";
+
+@import "./Footer/Footer";
 
 

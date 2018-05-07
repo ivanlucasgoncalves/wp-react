@@ -9,7 +9,7 @@ export default class ContentBlog extends React.Component {
       <NotFound />
     );
   }
-  renderPost(){
+  renderPosts(){
     const { id, title, slug, excerpt, featured_image_src, author_name, published_date, content } = this.props.post;
     return(
       <article id={`post-${id}`}>
@@ -31,7 +31,7 @@ export default class ContentBlog extends React.Component {
     console.log(this.props.post);
     return(
       <div className="col">
-        {this.renderPost()}
+        {this.renderPosts()}
       </div>
     );
   }

@@ -1,9 +1,7 @@
 
-const apiURL = "htbtsubts";
-
 const WPReact = {
   
-  fetchPages() {
+  fetchPages(){
     return fetch(WPReactSettings.URL.api + "/pages").then(response => {
       if(response.ok){
         return response.json();
@@ -17,7 +15,7 @@ const WPReact = {
       }));
     });
   },
-  fetchPosts() {
+  fetchPosts(){
     return fetch(WPReactSettings.URL.api + "/posts").then(response => {
       if(response.ok){
         return response.json();

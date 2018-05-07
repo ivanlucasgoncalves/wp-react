@@ -1,3 +1,13 @@
-.title {
-  color: white;
+header{
+  background-color: #d33a2c;
+  padding: 60px 0;
+  ul{
+    li{
+      display: inline-block;
+      margin-right: 20px;
+      a{
+        color: #FFFFFF;
+      }
+    }
+  }
 }

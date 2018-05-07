@@ -28,12 +28,12 @@ export default class Arquive extends React.Component {
   }
   render(){
     return(
-      <div>
+      <main>
         <Title title="Blog" />
         <div className="cntr">
           <Post posts={this.state.posts} />
         </div>
-      </div>
+      </main>
     );
   }
 }
