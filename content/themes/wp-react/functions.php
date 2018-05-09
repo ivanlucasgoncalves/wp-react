@@ -7,6 +7,18 @@
  * @package WP React
  */
 
+if (! function_exists('wpreact_setup')) :
+    function wpreact_setup()
+    {
+      
+        //
+        add_theme_support('post-thumbnails');
+        add_image_size('post-blog', 650, 350, true);
+        add_image_size('post-full-image', 1160, 560, true);
+      
+    }
+endif;
+add_action('after_setup_theme', 'wpreact_setup');
 
 /**
  * Enqueue scripts and styles.
@@ -39,10 +51,6 @@ function wp_react_scripts()
     )));
 }
 add_action('wp_enqueue_scripts', 'wp_react_scripts');
-
-//
-add_theme_support('post-thumbnails');
-add_image_size('post-blog', 650, 350, true);
 
 // Add various fields to the JSON output
 function wpreact_register_fields()

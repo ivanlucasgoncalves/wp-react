@@ -7,6 +7,7 @@ export default class Header extends React.Component {
       <header>
         <ul className="cntr">
           <li><Link to="/">Home</Link></li>
+          <li><Link to="/page/sample-page">Sample Page</Link></li>
           <li><Link to="/blog">Blog</Link></li>
         </ul>
       </header>

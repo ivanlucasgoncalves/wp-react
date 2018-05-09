@@ -2,6 +2,7 @@ import React from 'react';
 
 import Post from '../Post/Post';
 import Title from '../TemplateParts/Title';
+import Loader from '../TemplateParts/Loader';
 import WPReact from '../../Util/WPReact';
 
 export default class Arquive extends React.Component {
@@ -9,9 +10,10 @@ export default class Arquive extends React.Component {
     super(props);
     
     this.state = {
-      posts: []
+      posts: [],
+      page: 0,
+      isLoading: true
     }
-    this.getPosts = this.getPosts.bind(this);
   }
   componentWillUnmount() {
     this.getPosts = null;
@@ -20,9 +22,14 @@ export default class Arquive extends React.Component {
     this.getPosts();
   }
   getPosts(){
+    //this.setState({ page: this.state.page + 1 });
+    //console.log(this.state.page);
     WPReact.fetchPosts().then(response => {
+      //console.log(response);
       this.setState({
-        posts: response
+        posts: response,
+        page: this.state.page + 1,
+        isLoading: false
       });
     });
   }
@@ -31,7 +38,9 @@ export default class Arquive extends React.Component {
       <main>
         <Title title="Blog" />
         <div className="cntr">
-          <Post posts={this.state.posts} />
+          {this.state.isLoading ? 
+            <Loader /> 
+            : <Post posts={this.state.posts} />}
         </div>
       </main>
     );

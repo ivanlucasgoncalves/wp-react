@@ -1,33 +1,7 @@
 
-.cntr {
-  width: 100%;
-  max-width: 1220px;
-  height: auto;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
-}
-.col {
-  flex: 0 0 33.333333%;
-  max-width: 33.333333%;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  width: 100%;
-  min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-top: 60px;
-}
 .img-blog {
   position: relative;
   img {
-    //object-fit: cover;
     height: auto;
     width: 100%;
   }
@@ -42,10 +16,8 @@
 h3 {
   margin-top: 15px;
   color: #4A4A4A;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 25px;
-  letter-spacing: 0em;
+  font-size: 16px;
+  line-height: 1.5em;
   a {
     display: block;
     color: #4A4A4A;
