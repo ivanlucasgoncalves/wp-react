@@ -19,6 +19,12 @@ export default class Single extends React.Component {
   componentDidMount() {
     this.getSingle();
   }
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps != this.props) {
+      this.setState({ isLoading: true });
+      this.getSingle();
+    }
+  }
   getSingle(){
     WPReact.fetchSingle().then(response => {
       this.setState({
@@ -31,11 +37,9 @@ export default class Single extends React.Component {
     //console.log(this.state.post);
     return(
       <main>
-        <div className="cntr">
-          {this.state.isLoading ? 
-            <Loader /> 
-            : <ContentSingle post={this.state.post} />}
-        </div>
+      {this.state.isLoading ? 
+        <Loader /> 
+        : <ContentSingle post={this.state.post} />}
       </main>
     );
   }

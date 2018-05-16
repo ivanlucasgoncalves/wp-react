@@ -64,6 +64,7 @@ html, body {
   position: relative;
   border: 0;
 	border-color: transparent;
+  background-color: #f9f9f9;
   margin:0;
   font-family: Helvetica,Arial,sans-serif;
   text-rendering:optimizeLegibility;
@@ -81,7 +82,7 @@ main{
   width: 100%;
   max-width: 1220px;
   height: auto;
-  margin: 0 auto;
+  margin: auto;
   padding: 0 20px;
 }
 .row {

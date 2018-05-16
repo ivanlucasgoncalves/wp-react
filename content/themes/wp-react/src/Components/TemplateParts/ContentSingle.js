@@ -1,5 +1,8 @@
 import React from 'react';
 
+import PostNavigation from './Blog/PostNavigation';
+import RelatedPosts from './Blog/RelatedPosts';
+
 export default class ContentSingle extends React.Component {
   renderSingle(){
     const { id, title, excerpt, featured_image_src, author_name, published_date, content, _embedded } = this.props.post;
@@ -28,10 +31,22 @@ export default class ContentSingle extends React.Component {
     );
   }
   render(){
-    //console.log(this.props.post)
+    console.log(this.props.post)
+    const { next_post, previous_post, related_posts } = this.props.post;
     return(
       <div className="blog-wrapper">
         {this.renderSingle()}
+        <PostNavigation next={next_post} prev={previous_post}/>
+        <div className="related-posts">
+          <div className="cntr">
+            <h2>Related Posts</h2>
+          </div>
+          <div className="cntr">
+            <div className="row">
+              {related_posts.map(related_post => <RelatedPosts key={related_post.ID} relatedposts={related_post}/>)}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

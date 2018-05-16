@@ -28,13 +28,13 @@ function wp_react_scripts()
     if (!is_admin()) {
         wp_deregister_script('jquery');
         wp_deregister_script('wp-embed');
-        wp_enqueue_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js', false, null, true);
+        //wp_enqueue_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js', false, null, true);
         // Add livereload for local access | DO NOT CHANGE
         wp_enqueue_script('livereload', 'http://localhost:35729/livereload.js?snipver=1', null, false, true);
     }
     wp_enqueue_style('wpreact-style', get_stylesheet_uri());
     wp_enqueue_style('style-css', get_template_directory_uri() . '/dist/css/style.min.css', false, filemtime(get_stylesheet_directory() . '/dist/css/style.min.css'));
-    wp_enqueue_script('script-js', get_template_directory_uri() . '/dist/app.min.js', array('jquery'), filemtime(get_stylesheet_directory().'/dist/app.min.js'), true);
+    wp_enqueue_script('script-js', get_template_directory_uri() . '/dist/app.min.js', array(), filemtime(get_stylesheet_directory().'/dist/app.min.js'), true);
     
     $url = trailingslashit(home_url());
     $path = trailingslashit(parse_url($url, PHP_URL_PATH));
@@ -82,6 +82,51 @@ function wpreact_register_fields()
         'update_callback' => null,
         'schema' => null)
     );
+    // Add Next Post
+    register_rest_field(
+        'post',
+        'next_post',
+        array(
+        'get_callback' => 'wpreact_next_post',
+        'update_callback' => null,
+        'schema' => null)
+    );
+    // Add Previous Post
+    register_rest_field(
+        'post',
+        'previous_post',
+        array(
+        'get_callback' => 'wpreact_previous_post',
+        'update_callback' => null,
+        'schema' => null)
+    );
+    // Add Tags
+    register_rest_field(
+        'post',
+        'tags_post',
+        array(
+        'get_callback' => 'wpreact_tags',
+        'update_callback' => null,
+        'schema' => null)
+    );
+    // Add Comments Number
+    register_rest_field(
+        'post',
+        'comments_number',
+        array(
+        'get_callback' => 'wpreact_comments_number',
+        'update_callback' => null,
+        'schema' => null)
+    );
+    // Add Comments Number
+    register_rest_field(
+        'post',
+        'related_posts',
+        array(
+        'get_callback' => 'wpreact_related_posts',
+        'update_callback' => null,
+        'schema' => null)
+    );
 }
 add_action('rest_api_init', 'wpreact_register_fields');
 
@@ -92,8 +137,7 @@ function wpreact_get_author_name($object, $field_name, $request)
 
 function wpreact_get_image_src($object, $field_name, $request)
 {
-    if ($object['featured_media'] == 0)
-    {
+    if ($object['featured_media'] == 0) {
         return $object['featured_media'];
     }
     $feat_img_array = wp_get_attachment_image_src($object['featured_media'], 'post-blog', true);
@@ -111,9 +155,89 @@ function wpreact_excerpt_length($length)
 }
 add_filter('excerpt_length', 'wpreact_excerpt_length');
 
+function wpreact_next_post($object, $field_name, $request)
+{
+    $next_post = get_next_post();
+    return $next_post;
+}
+
+function wpreact_previous_post($object, $field_name, $request)
+{
+    $previous_post = get_previous_post();
+    return $previous_post;
+}
+
+function wpreact_tags($object, $field_name, $request)
+{
+    $tags = get_the_tags();
+    return $tags;
+}
+
+function wpreact_comments_number($object, $field_name, $request)
+{
+    $comments_number = get_comments_number('0', '1', '%');
+    return $comments_number;
+}
+
+function wpreact_related_posts($object, $field_name, $request)
+{
+    $tags_related = wp_get_post_tags(get_the_ID());
+    if ($tags_related) {
+        $tag_ids = array();
+        foreach ($tags_related as $individual_tag) {
+            $tag_ids[] = $individual_tag->term_id;
+        }
+        $args = array(
+          'tag__in' => $tag_ids,
+          'post__not_in' => array(get_the_ID()),
+          'posts_per_page'=> 3, // Number of related posts to display.
+          'caller_get_posts'=> 1,
+        );
+        $posts_array = get_posts($args);
+        
+        //Querying posts
+        $allposts = new WP_Query($args);
+        while ($allposts -> have_posts()) {
+            $allposts -> the_post();
+            $postsrelated[] = array( //Creating an array with all fiels for Related Posts
+              'ID' => get_the_ID(),
+              'title' => get_the_title(),
+              'featured_image_src' => get_the_post_thumbnail_url(get_the_ID(), 'post-blog'),
+              'slug' => get_post_field('post_name'),
+              'excerpt' => get_the_excerpt(),
+              'comments_number' => get_comments_number('0', '1', '%'),
+              'published_date' => get_the_date('F j, Y')
+            );
+        }
+        return $postsrelated;
+        wp_reset_query();
+    }
+}
+
 /**
  * Remove WP Emoji
  */
+remove_action('wp_head', 'rsd_link'); // remove really simple discovery link
+remove_action('wp_head', 'wp_generator'); // remove wordpress version
+
+remove_action('wp_head', 'feed_links', 2); // remove rss feed links (make sure you add them in yourself if youre using feedblitz or an rss service)
+remove_action('wp_head', 'feed_links_extra', 3); // removes all extra rss feed links
+
+remove_action('wp_head', 'index_rel_link'); // remove link to index page
+remove_action('wp_head', 'wlwmanifest_link'); // remove wlwmanifest.xml (needed to support windows live writer)
+
+// Turn off oEmbed auto discovery.
+add_filter( 'embed_oembed_discover', '__return_false' );
+
+// Don't filter oEmbed results.
+remove_filter( 'oembed_dataparse', 'wp_filter_oembed_result', 10 );
+
+// Remove oEmbed discovery links.
+remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
+
+// Remove oEmbed-specific JavaScript from the front-end and back-end.
+remove_action( 'wp_head', 'wp_oembed_add_host_js' );
+
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
 remove_action('admin_print_scripts', 'print_emoji_detection_script');

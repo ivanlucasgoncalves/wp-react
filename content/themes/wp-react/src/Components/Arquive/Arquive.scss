@@ -1,4 +1,15 @@
 
+article.col-posts {
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 1, 1, 0.025);
+  overflow: hidden;
+  .entry-post-list {
+    padding: 25px;
+  }
+}
 .img-blog {
   position: relative;
   img {
@@ -7,11 +18,39 @@
   }
 }
 .entry-date {
-  margin-top: 15px;
   color: #999;
   font-weight: lighter;
   font-size: 14px;
   display: block;
+}
+.tags {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1;
+  span {
+    display: inline-block;
+    border-radius: 15px;
+    font-size: 10px;
+    font-weight: normal;
+    letter-spacing: -0.2px;
+    padding: 7px 14px;
+    color: #fff;
+    line-height: 1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    margin-right: 5px;
+    transition: all 0.25s ease;
+    &.tag-funny-news {
+      background-color: #ff0f34;
+    }
+    &.tag-featured {
+      background-color: #0275d8;
+    }
+    &.tag-viral {
+      background-color: #292b2c;
+    }
+  }
 }
 h3 {
   margin-top: 15px;
@@ -33,9 +72,26 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-top: 1px solid #eee;
+  margin-top: 20px;
+  padding-top: 20px;
   .read-more {
     color: #999;
     font-weight: lighter;
     font-size: 14px;
+  }
+  .comments {
+    display: flex;
+    align-items: center;
+    color: #999;
+    span{
+      font-weight: lighter;
+      font-size: 14px;
+    }
+    svg {
+      margin-left: 4px;
+      fill: none;
+      stroke: #999;
+    }
   }
 }
