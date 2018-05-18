@@ -74,9 +74,13 @@ h1{
   font-size: 62px;
   line-height: 72px;
 }
+h2, h3, h4, h5, h6 {
+  font-family: Helvetica,Arial,sans-serif;
+}
 main{
-  margin: 20px 0;
+  margin-bottom: 40px;
   min-height: calc(100vh - 276px);
+  position: relative;
 }
 .cntr {
   width: 100%;
@@ -110,7 +114,10 @@ main{
 
 @import "./Single/Single";
 
+@import "./NotFound/NotFound";
+
 @import "./Footer/Footer";
+
 
 #loader{
   box-sizing: border-box;

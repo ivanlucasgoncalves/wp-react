@@ -1,0 +1,24 @@
+.error-mainctn {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 40px 0;
+  svg.error-icon {
+    max-width: 320px;
+    width: 50%;
+    display: block;
+    margin: auto;
+  }
+  .error-innerctn {
+    width: 50%;
+    padding: 20px;
+    h2 {
+      font-family: Georgia,serif;
+      font-size: 82px
+    }
+    h3 {
+      font-weight: lighter;
+      font-size: 42px;
+    }
+  }
+}

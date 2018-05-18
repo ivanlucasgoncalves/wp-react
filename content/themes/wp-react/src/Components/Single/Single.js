@@ -19,7 +19,7 @@ export default class Single extends React.Component {
   componentDidMount() {
     this.getSingle();
   }
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if(prevProps != this.props) {
       this.setState({ isLoading: true });
       this.getSingle();
@@ -34,7 +34,6 @@ export default class Single extends React.Component {
     });
   }
   render(){
-    //console.log(this.state.post);
     return(
       <main>
       {this.state.isLoading ? 

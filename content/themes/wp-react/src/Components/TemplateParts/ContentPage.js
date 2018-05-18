@@ -4,20 +4,27 @@ export default class ContentPage extends React.Component {
   renderPage(){
     const { id, title, content } = this.props.page;
     return(
-      <article id={`page-${id}`}>
-        {title && <h1>{title.rendered}</h1>}
-        {content &&
-        <div className="entry-content">
-      		<div dangerouslySetInnerHTML={{ __html: content.rendered }}  />
-      	</div>}
-      </article>
+      <div className="cntr">
+        <article id={`page-${id}`}>
+          {content &&
+          <div className="entry-content">
+        		<div dangerouslySetInnerHTML={{ __html: content.rendered }}  />
+        	</div>}
+        </article>
+      </div>
     );
   }
   render(){
-    console.log(this.props.page)
     return(
       <div>
-        {this.renderPage()}
+        <div className="top-header">
+          <div className="cntr">
+            <h1>Sample Page</h1>
+          </div>
+        </div>
+        {
+          this.renderPage()
+        }
       </div>
     );
   }

@@ -13,7 +13,7 @@ export default class Page extends React.Component {
       isLoading: true
     }
   }
-  componentWillUnmount() {
+  componentWillUnmount(){
     this.getPage = null;
   }
   componentDidMount(){
@@ -28,14 +28,11 @@ export default class Page extends React.Component {
     })
   }
   render(){
-    console.log(this.state.pages)
     return(
       <main>
-        <div className="cntr">
-          {this.state.isLoading ? 
-            <Loader /> 
-            : this.state.pages.map(page => <ContentPage key={page.id} page={page}/>)}
-        </div>
+      {this.state.isLoading ? 
+        <Loader /> 
+        : this.state.pages.map(page => <ContentPage key={page.id} page={page}/>)}
       </main>
     );
   }
