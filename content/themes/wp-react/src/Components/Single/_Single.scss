@@ -132,3 +132,37 @@ article.single {
     margin-top: 0;
   }
 }
+.entry-comments {
+  max-width: 720px;
+  margin-top: 40px;
+  .form-comments {
+    h3 {
+      font-family: Georgia,serif;
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+    input,
+    textarea {
+      border: 0;
+      border: 1px solid #eee;
+      padding: 15px 10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    textarea {
+      width: 100%;
+      resize: vertical;
+      min-height: 120px;
+    }
+    .dual-input {
+      display: flex;
+      justify-content: space-between;
+      input {
+        width: 49%;
+      }
+    }
+    .input-submit {
+      cursor: pointer;
+    }
+  }
+}

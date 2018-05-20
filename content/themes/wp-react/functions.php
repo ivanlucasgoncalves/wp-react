@@ -118,7 +118,7 @@ function wpreact_register_fields()
         'update_callback' => null,
         'schema' => null)
     );
-    // Add Comments Number
+    // Add Posts Related
     register_rest_field(
         'post',
         'related_posts',
@@ -126,6 +126,23 @@ function wpreact_register_fields()
         'get_callback' => 'wpreact_related_posts',
         'update_callback' => null,
         'schema' => null)
+    );
+    // Schema for post_views field
+    $post_views_schema = array(
+        'description'   => 'Post views count',
+        'type'          => 'integer',
+        'context'       =>   array( 'view', 'edit' )
+    );
+     
+    // Add the post_views field
+    register_rest_field(
+        'post',
+        'post_views',
+        array(
+            'get_callback'      => 'get_post_views',
+            'update_callback'   => 'update_post_views',
+            'schema'            => $post_views_schema
+        )
     );
 }
 add_action('rest_api_init', 'wpreact_register_fields');
@@ -215,6 +232,23 @@ function wpreact_related_posts($object, $field_name, $request)
 }
 
 /**
+* Callback for retrieving post views count*/
+function get_post_views($object, $field_name, $request)
+{
+    return (int) get_post_meta($object['id'], $field_name, true);
+}
+ 
+/**
+* Callback for updating post views count*/
+function update_post_views($value, $object, $field_name)
+{
+    if (! $value || ! is_numeric($value)) {
+        return;
+    }
+    return update_post_meta($object->ID, $field_name, (int) $value);
+}
+
+/**
  * Remove WP Emoji
  */
 remove_action('wp_head', 'rsd_link'); // remove really simple discovery link
@@ -227,18 +261,24 @@ remove_action('wp_head', 'index_rel_link'); // remove link to index page
 remove_action('wp_head', 'wlwmanifest_link'); // remove wlwmanifest.xml (needed to support windows live writer)
 
 // Turn off oEmbed auto discovery.
-add_filter( 'embed_oembed_discover', '__return_false' );
+add_filter('embed_oembed_discover', '__return_false');
 
 // Don't filter oEmbed results.
-remove_filter( 'oembed_dataparse', 'wp_filter_oembed_result', 10 );
+remove_filter('oembed_dataparse', 'wp_filter_oembed_result', 10);
 
 // Remove oEmbed discovery links.
-remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
+remove_action('wp_head', 'wp_oembed_add_discovery_links');
 
 // Remove oEmbed-specific JavaScript from the front-end and back-end.
-remove_action( 'wp_head', 'wp_oembed_add_host_js' );
+remove_action('wp_head', 'wp_oembed_add_host_js');
 
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
 remove_action('admin_print_scripts', 'print_emoji_detection_script');
 remove_action('admin_print_styles', 'print_emoji_styles');
+
+function filter_rest_allow_anonymous_comments()
+{
+    return true;
+}
+add_filter('rest_allow_anonymous_comments', 'filter_rest_allow_anonymous_comments');

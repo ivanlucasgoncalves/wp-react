@@ -2,6 +2,7 @@ import React from 'react';
 
 import PostNavigation from './Blog/PostNavigation';
 import RelatedPosts from './Blog/RelatedPosts';
+import Comments from './Blog/Comments';
 
 export default class ContentSingle extends React.Component {
   renderSingle(){
@@ -31,12 +32,13 @@ export default class ContentSingle extends React.Component {
     );
   }
   render(){
-    const { next_post, previous_post, related_posts } = this.props.post;
+    const { id, next_post, previous_post, related_posts } = this.props.post;
     return(
       <div className="blog-wrapper">
         {
           this.renderSingle()
         }
+        <Comments postID={id} />
         <PostNavigation next={next_post} prev={previous_post} />
         <RelatedPosts relatedposts={related_posts} />
       </div>
