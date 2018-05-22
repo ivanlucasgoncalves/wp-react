@@ -33,10 +33,16 @@ article.single {
       width: 56px;
       height: 56px;
       background-color: #999;
+      img {
+        width: 56px;
+        height: 56px;
+        object-fit: contain;
+      }
     }
     .entry-date {
       font-size: 12px;
-      margin-top: 10px;
+      margin-top: 5px;
+      display: block;
     }
   }
   .entry-content {
@@ -76,7 +82,8 @@ article.single {
       padding: 5px 0 5px 15px;
       margin: 15px 0;
       p {
-        margin: 0
+        margin: 0;
+        font-size: 18px;
       }
     }
     figure {
@@ -93,6 +100,7 @@ article.single {
   padding: 25px 0;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
+  transition: all 0.2s ease-in-out;
   .cntr {
     display: flex;
     align-items: center;
@@ -119,6 +127,9 @@ article.single {
   a.next-post {
     text-align: right;
   }
+  &:hover {
+    background-color: #eee;
+  }
 }
 .related-posts {
   margin-bottom: 60px;
@@ -144,6 +155,8 @@ article.single {
   .entry-comments {
     max-width: 720px;
     margin-top: 40px;
+    position: relative;
+    min-height: 90px;
   }
   .comment {
     border: 1px solid #eee;
@@ -155,15 +168,17 @@ article.single {
       align-items: center;
       .ctn-head {
         margin-left: 6px;
-        h4,
-        span {
+        h4 {
+          color: #4a4a4a;
           font-size: 13px;
-          color: #999;
-          font-weight: lighter;
+          font-weight: normal;
         }
         span {
+          font-size: 12px;
           margin-top: 3px;
           display: block;
+          color: #999;
+          font-weight: lighter;
         }
       }
       .author-avatar {

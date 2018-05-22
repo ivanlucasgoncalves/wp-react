@@ -14,7 +14,9 @@ export default class RelatedPostsList extends React.Component {
             </div>
           </Link>}
           <div className="entry-post-list">
-            {published_date && <span className="entry-date">{published_date}</span>}
+            <div className="head-post-list">
+              {published_date && <span className="entry-date">{published_date}</span>}
+            </div>
             {title && <h3><Link to={slug}>{title}</Link></h3>}
             {excerpt && <p dangerouslySetInnerHTML={{ __html: excerpt }}  />}
             <div className="foot-blg-list">

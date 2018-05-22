@@ -5,7 +5,7 @@ import TagsList from './Blog/TagsList';
 
 export default class ContentBlog extends React.Component {
   renderPosts(){
-    const { id, title, slug, excerpt, featured_image_src, author_name, published_date, tags_post, comments_number, content } = this.props.post;
+    const { id, title, slug, excerpt, featured_image_src, author_name, author_avatar, published_date, tags_post, comments_number, content } = this.props.post;
     return(
       <article id={`post-${id}`} className="col-posts">
         {featured_image_src && 
@@ -19,7 +19,11 @@ export default class ContentBlog extends React.Component {
           <TagsList key={tag.term_id} tag={tag} />)}
         </div>}
         <div className="entry-post-list">
-          {published_date && <span className="entry-date">{published_date}</span>}
+          <div className="head-post-list">
+            {author_avatar && <img className="entry-author_avatar" src={author_avatar} alt={author_name} />}
+            {author_name && <span className="entry-author_name">{author_name}</span>}
+            {published_date && <span className="entry-date">{published_date}</span>}
+          </div>
           {title && <h3><Link to={`blog/${slug}`}>{title.rendered}</Link></h3>}
           {excerpt && <div dangerouslySetInnerHTML={{ __html: excerpt.rendered }}  />}
           <div className="foot-blg-list">

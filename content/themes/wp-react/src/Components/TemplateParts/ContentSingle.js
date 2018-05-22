@@ -6,12 +6,12 @@ import Comments from './Blog/Comments';
 
 export default class ContentSingle extends React.Component {
   renderSingle(){
-    const { id, title, excerpt, featured_image_src, author_name, published_date, content, _embedded } = this.props.post;
+    const { id, title, excerpt, featured_image_src, author_name, author_avatar, published_date, content, _embedded } = this.props.post;
     return(
       <article id={`post-${id}`} className="single">
         <div className="cntr">
           <div className="meta">
-            <div className="author-avatar"></div>
+            <div className="author-avatar">{author_avatar && <img src={author_avatar} alt={author_name && author_name} />}</div>
             <div className="ctn-meta">
               {author_name && <h5 className="author-title">{author_name}</h5>}
               {published_date && <span className="entry-date">Posted on {published_date}</span>}

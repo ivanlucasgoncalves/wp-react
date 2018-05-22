@@ -64,6 +64,15 @@ function wpreact_register_fields()
         'update_callback' => null,
         'schema' => null)
     );
+    // Add Author Avatar
+    register_rest_field(
+        'post',
+        'author_avatar',
+        array(
+        'get_callback' => 'wpreact_get_author_avatar',
+        'update_callback' => null,
+        'schema' => null)
+    );
     // Add Featured Image
     register_rest_field(
         'post',
@@ -79,6 +88,15 @@ function wpreact_register_fields()
         'published_date',
         array(
         'get_callback' => 'wpreact_published_date',
+        'update_callback' => null,
+        'schema' => null)
+    );
+    // Add Published Date
+    register_rest_field(
+        'comment',
+        'published_comment',
+        array(
+        'get_callback' => 'wpreact_published_comment',
         'update_callback' => null,
         'schema' => null)
     );
@@ -152,6 +170,12 @@ function wpreact_get_author_name($object, $field_name, $request)
     return get_the_author_meta('display_name');
 }
 
+function wpreact_get_author_avatar($object, $field_name, $request)
+{
+    $args = get_avatar_data($object['id']);
+    return $args['url'];
+}
+
 function wpreact_get_image_src($object, $field_name, $request)
 {
     if ($object['featured_media'] == 0) {
@@ -163,7 +187,14 @@ function wpreact_get_image_src($object, $field_name, $request)
 
 function wpreact_published_date($object, $field_name, $request)
 {
-    return get_the_time('F j, Y');
+    $published_date = get_the_date('F j, Y', $object['id']);
+    return $published_date;
+}
+
+function wpreact_published_comment($object, $field_name, $request)
+{
+    $published_comment = get_comment_date('F j, Y', $object['id']);
+    return $published_comment;
 }
 
 function wpreact_excerpt_length($length)

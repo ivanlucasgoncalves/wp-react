@@ -12,29 +12,26 @@ export default class Comments extends React.Component {
       email: ''
     }
     
-    this.handleCommentChange = this.handleCommentChange.bind(this);
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.baseState = this.state; // preserve the initial state in a new object
   }
-  handleCommentChange(event){
-    this.setState({ 
-      comment: event.target.value
-    });
-  }
-  handleNameChange(event){
-    this.setState({ 
-      name: event.target.value
-    });
-  }
-  handleEmailChange(event){
-    this.setState({ 
-      email: event.target.value
-    });
+  handleInputChange(event){
+    this.setState({
+      [event.target.name]: event.target.value,
+    })
   }
   handleSubmit(event){
     event.preventDefault();
-    this.postComment();
+    if(!this.state.comment || !this.state.name || !this.state.email) {
+      console.log('Please fill the form!');
+    } else {
+      this.postComment();
+      this.resetForm();
+    }
+  }
+  resetForm(){
+    this.setState(this.baseState);
   }
   postComment(){
     const { postID } = this.props;
@@ -71,10 +68,10 @@ export default class Comments extends React.Component {
                 <path d="M20.98 7.8c0 3.5-2.87 6.38-6.38 6.38h-2.55l-3.4 3.4v-3.4H7.8c-3.5 0-6.38-2.87-6.38-6.38 0-3.5 2.87-6.38 6.38-6.38h6.8c3.5 0 6.38 2.87 6.38 6.38z" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </h3>
-            <textarea value={this.state.comment} onChange={this.handleCommentChange} placeholder="Write a Comment..."></textarea>
+            <textarea value={this.state.comment} name="comment" onChange={this.handleInputChange} placeholder="Write a Comment..."></textarea>
             <div className="dual-input">
-              <input type="text" value={this.state.name} onChange={this.handleNameChange} placeholder="Name" />
-              <input type="email" value={this.state.email} onChange={this.handleEmailChange} placeholder="Email" />
+              <input type="text" value={this.state.name} name="name" onChange={this.handleInputChange} placeholder="Name" />
+              <input type="email" value={this.state.email} name="email" onChange={this.handleInputChange} placeholder="Email" />
             </div>
             <input className="input-submit" type="submit" value="Post Comment"/>
           </form>

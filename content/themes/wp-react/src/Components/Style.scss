@@ -131,6 +131,16 @@ main{
   left: 0;
   align-items: center;
 }
+#loader-comment {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  align-items: center;
+}
 
 @keyframes rotate {
   0% {
