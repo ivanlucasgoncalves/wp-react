@@ -5,11 +5,33 @@ import RelatedPosts from './Blog/RelatedPosts';
 import Comments from './Blog/Comments';
 
 export default class ContentSingle extends React.Component {
+  constructor(props){
+    super(props);
+    
+    this.handleLoveIt = this.handleLoveIt.bind(this);
+  }
+  handleLoveIt(){
+    const { id } = this.props.post;
+    //console.log(`Love it ${id}`);
+    return fetch(WPReactSettings.URL.api + "/loves/" + id, {
+      method: 'POST',
+      headers: {
+       "Content-type": "application/json"
+      }
+    }).then(response => {
+        if(response.ok){
+          return response.json();
+        }
+        throw new Error('Request Failed!');
+      }, networkError => console.log(networkError.message)
+    );
+  }
   renderSingle(){
     const { id, title, excerpt, featured_image_src, author_name, author_avatar, published_date, content, _embedded } = this.props.post;
     return(
       <article id={`post-${id}`} className="single">
         <div className="cntr">
+          <button onClick={this.handleLoveIt}>Love it</button>
           <div className="meta">
             <div className="author-avatar">{author_avatar && <img src={author_avatar} alt={author_name && author_name} />}</div>
             <div className="ctn-meta">
@@ -32,6 +54,7 @@ export default class ContentSingle extends React.Component {
     );
   }
   render(){
+    //console.log(this.props.post)
     const { id, next_post, previous_post, related_posts } = this.props.post;
     return(
       <div className="blog-wrapper">

@@ -13,7 +13,7 @@ article.col-posts {
   box-shadow: 0px 2px 6px 0px rgba(0, 1, 1, 0.025);
   overflow: hidden;
   .entry-post-list {
-    padding: 25px;
+    padding: 20px 25px 25px 25px;
   }
 }
 .img-blog {
@@ -104,18 +104,36 @@ p {
     font-weight: lighter;
     font-size: 14px;
   }
-  .comments {
+  .inf-post {
     display: flex;
     align-items: center;
-    color: #999;
-    span{
-      font-weight: lighter;
-      font-size: 14px;
+    .love-it {
+      display: flex;
+      align-items: center;
+      color: #999;
+      span{
+        font-weight: lighter;
+        font-size: 14px;
+      }
+      svg {
+        margin-left: 3px;
+        fill: #999;
+      }
     }
-    svg {
-      margin-left: 4px;
-      fill: none;
-      stroke: #999;
+    .comments {
+      display: flex;
+      align-items: center;
+      color: #999;
+      margin-left: 10px;
+      span{
+        font-weight: lighter;
+        font-size: 14px;
+      }
+      svg {
+        margin-left: 3px;
+        fill: none;
+        stroke: #999;
+      }
     }
   }
 }

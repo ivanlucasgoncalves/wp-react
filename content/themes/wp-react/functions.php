@@ -145,13 +145,26 @@ function wpreact_register_fields()
         'update_callback' => null,
         'schema' => null)
     );
+    // Add Love it
+    register_rest_field(
+        'post',
+        'love_it',
+        array(
+        'get_callback' => 'wpreact_love_it',
+        'update_callback' => null,
+        'schema' => null)
+    );
+    register_rest_route('wp/v2', '/loves/(?P<id>\d+)', array(
+        'methods' => array('GET','POST'),
+        'callback' => 'wpreact_love_counter',
+    ));
+    
     // Schema for post_views field
     $post_views_schema = array(
         'description'   => 'Post views count',
         'type'          => 'integer',
         'context'       =>   array( 'view', 'edit' )
     );
-     
     // Add the post_views field
     register_rest_field(
         'post',
@@ -260,6 +273,24 @@ function wpreact_related_posts($object, $field_name, $request)
         return $postsrelated;
         wp_reset_query();
     }
+}
+
+function wpreact_love_it($object, $field_name, $request)
+{
+    if (get_field('loves_count', $object['id']) == null) {
+        return 0;
+    }
+    return get_field('loves_count', $object['id']);
+}
+
+function wpreact_love_counter(WP_REST_Request $request)
+{
+    $field_name = 'loves_count';
+    $current_loves = get_field($field_name, $request['id']);
+    $updated_loves = $current_loves + 1;
+    $loves = update_field($field_name, $updated_loves, $request['id']);
+
+    return $loves;
 }
 
 /**
