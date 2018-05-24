@@ -37,7 +37,7 @@ export default class Comments extends React.Component {
     const { postID } = this.props;
     const { comment, name, email } = this.state;
     
-    return fetch(WPReactSettings.URL.api + "/comments?post=" + postID, {
+    fetch(WPReactSettings.URL.api + "/comments?post=" + postID, {
       method: 'POST',
       headers: {
        "Content-type": "application/json"

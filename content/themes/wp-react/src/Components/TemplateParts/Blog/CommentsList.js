@@ -73,7 +73,9 @@ export default class CommentsList extends React.Component {
               <div></div>
             </div>
           </div>
-          ) : this.getComments()}
+          ) : (
+            this.state.comments.length > 0 ? this.getComments() : <p>No Comments so far.</p>
+          )}
       </div>
     );
   }

@@ -185,7 +185,7 @@ function wpreact_get_author_name($object, $field_name, $request)
 
 function wpreact_get_author_avatar($object, $field_name, $request)
 {
-    $args = get_avatar_data($object['id']);
+    $args = get_avatar_data($object['id'], array('size' => 56));
     return $args['url'];
 }
 
@@ -263,10 +263,13 @@ function wpreact_related_posts($object, $field_name, $request)
             $postsrelated[] = array( //Creating an array with all fiels for Related Posts
               'ID' => get_the_ID(),
               'title' => get_the_title(),
+              'author_name' => get_the_author_meta('display_name'),
+              'author_avatar' => get_avatar_url(get_the_ID(), array('size' => 56)),
               'featured_image_src' => get_the_post_thumbnail_url(get_the_ID(), 'post-blog'),
               'slug' => get_post_field('post_name'),
               'excerpt' => get_the_excerpt(),
               'comments_number' => get_comments_number('0', '1', '%'),
+              'love_it' => get_field('loves_count'),
               'published_date' => get_the_date('F j, Y')
             );
         }
@@ -278,7 +281,7 @@ function wpreact_related_posts($object, $field_name, $request)
 function wpreact_love_it($object, $field_name, $request)
 {
     if (get_field('loves_count', $object['id']) == null) {
-        return 0;
+        return '0';
     }
     return get_field('loves_count', $object['id']);
 }
