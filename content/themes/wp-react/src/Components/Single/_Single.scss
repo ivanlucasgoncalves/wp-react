@@ -1,8 +1,12 @@
-/* Blog Single */
+// =============================================================================
+// Article Single Post
+// =============================================================================
+
 article.single {
   width: 100%;
   position: relative;
   margin-top: 30px;
+  //New Containers sizes
   .cntr {
     max-width: 720px; 
   }
@@ -18,27 +22,7 @@ article.single {
       width: 100%;
     }
   }
-  #btn-love-it {
-    border: 0;
-    background-color: transparent;
-    padding: 0;
-    cursor: pointer;
-    outline: 0;
-    svg {
-      fill: #ff0f34;
-    }
-    &:hover {
-      animation-duration: 1s;
-      animation-fill-mode: both;
-      animation-name: pulse;
-    }
-    &.love-it-actived {
-      pointer-events: none;
-      svg {
-        fill: #999;
-      }
-    }
-  }
+  //Top Head Meta
   .meta {
     color: #999;
     display: flex;
@@ -71,7 +55,35 @@ article.single {
         display: block;
       }
     }
+    //Btn Love it
+    #btn-love-it {
+      border: 0;
+      background-color: transparent;
+      padding: 0;
+      cursor: pointer;
+      outline: 0;
+      svg {
+        fill: #ff0f34;
+      }
+      &:hover {
+        animation-duration: 1s;
+        animation-fill-mode: both;
+        animation-name: pulse;
+      }
+      &.love-isloading {
+        animation-duration: 0.5s;
+        animation-fill-mode: both;
+        animation-name: scaleFade;
+      }
+      &.love-it-actived {
+        pointer-events: none;
+        svg {
+          fill: #999;
+        }
+      }
+    }
   }
+  //Entry Content
   .entry-content {
     h1, h2, h3, h4, h5 {
       margin: 25px 0;
@@ -122,6 +134,7 @@ article.single {
     }
   }
 }
+//Navigation between Single Posts
 .post-nav {
   margin: 60px 0;
   padding: 25px 0;
@@ -158,6 +171,7 @@ article.single {
     background-color: #eee;
   }
 }
+//Related Posts
 .related-posts {
   margin-bottom: 60px;
   h2 {
@@ -170,6 +184,7 @@ article.single {
     margin-top: 0;
   }
 }
+//Comments
 .comments-wrapper {
   margin-top: 60px;
   padding-top: 20px;
@@ -259,14 +274,3 @@ article.single {
   }
 }
 
-@keyframes pulse {
-  from {
-    transform: scale3d(1, 1, 1);
-  }
-  50% {
-    transform: scale3d(1.05, 1.05, 1.05);
-  }
-  to {
-    transform: scale3d(1, 1, 1);
-  }
-}

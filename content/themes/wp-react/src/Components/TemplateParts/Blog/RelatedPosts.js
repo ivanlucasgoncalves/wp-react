@@ -14,7 +14,7 @@ export default class RelatedPosts extends React.Component {
         <div className="cntr">
           <div className="row">
             {
-              relatedposts.map(relatedpost => <RelatedPostsList key={relatedpost.ID} relatedpost={relatedpost}/>)
+              relatedposts.map(relatedpost => <RelatedPostsList key={relatedpost.id} relatedpost={relatedpost}/>)
             }
           </div>
         </div>

@@ -13,13 +13,18 @@ export default class ContentSingle extends React.Component {
   handleLoveIt(){
     const { id } = this.props.post;
     const btn = document.getElementById('btn-love-it');
+    btn.classList.add('love-isloading');
 
     fetch(WPReactSettings.URL.api + "/loves/" + id, {
       method: 'POST'
     }).then(response => {
         if(response.ok){
-          btn.classList.add('love-it-actived');
           btn.disabled = true;
+          setTimeout(() => {
+            btn.classList.remove('love-isloading');
+            btn.classList.add('love-it-actived');
+          }, 500);
+          clearTimeout();
           return response.json();
         }
         throw new Error('Request Failed!');

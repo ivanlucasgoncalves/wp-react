@@ -158,23 +158,19 @@ function wpreact_register_fields()
         'methods' => array('GET','POST'),
         'callback' => 'wpreact_love_counter',
     ));
-    
-    // Schema for post_views field
-    $post_views_schema = array(
-        'description'   => 'Post views count',
-        'type'          => 'integer',
-        'context'       =>   array( 'view', 'edit' )
-    );
-    // Add the post_views field
+    // Add Post Views
     register_rest_field(
         'post',
-        'post_views',
+        'views',
         array(
-            'get_callback'      => 'get_post_views',
-            'update_callback'   => 'update_post_views',
-            'schema'            => $post_views_schema
-        )
+        'get_callback' => 'wpreact_post_views',
+        'update_callback' => null,
+        'schema' => null)
     );
+    register_rest_route('wp/v2', '/post_views/(?P<id>\d+)', array(
+        'methods' => array('GET','POST'),
+        'callback' => 'wpreact_post_views_counter',
+    ));
 }
 add_action('rest_api_init', 'wpreact_register_fields');
 
@@ -261,7 +257,7 @@ function wpreact_related_posts($object, $field_name, $request)
         while ($allposts -> have_posts()) {
             $allposts -> the_post();
             $postsrelated[] = array( //Creating an array with all fiels for Related Posts
-              'ID' => get_the_ID(),
+              'id' => get_the_ID(),
               'title' => get_the_title(),
               'author_name' => get_the_author_meta('display_name'),
               'author_avatar' => get_avatar_url(get_the_ID(), array('size' => 56)),
@@ -270,6 +266,7 @@ function wpreact_related_posts($object, $field_name, $request)
               'excerpt' => get_the_excerpt(),
               'comments_number' => get_comments_number('0', '1', '%'),
               'love_it' => get_field('loves_count'),
+              'views' => get_field('post_views'),
               'published_date' => get_the_date('F j, Y')
             );
         }
@@ -278,6 +275,8 @@ function wpreact_related_posts($object, $field_name, $request)
     }
 }
 
+/**
+* Callback for retrieving Love It*/
 function wpreact_love_it($object, $field_name, $request)
 {
     if (get_field('loves_count', $object['id']) == null) {
@@ -285,7 +284,8 @@ function wpreact_love_it($object, $field_name, $request)
     }
     return get_field('loves_count', $object['id']);
 }
-
+/**
+* Callback for updating Love It Count*/
 function wpreact_love_counter(WP_REST_Request $request)
 {
     $field_name = 'loves_count';
@@ -297,20 +297,24 @@ function wpreact_love_counter(WP_REST_Request $request)
 }
 
 /**
-* Callback for retrieving post views count*/
-function get_post_views($object, $field_name, $request)
+* Callback for retrieving Post Views*/
+function wpreact_post_views($object, $field_name, $request)
 {
-    return (int) get_post_meta($object['id'], $field_name, true);
-}
- 
-/**
-* Callback for updating post views count*/
-function update_post_views($value, $object, $field_name)
-{
-    if (! $value || ! is_numeric($value)) {
-        return;
+    if (get_field('post_views', $object['id']) == null) {
+        return '0';
     }
-    return update_post_meta($object->ID, $field_name, (int) $value);
+    return get_field('post_views', $object['id']);
+}
+/**
+* Callback for updating Post Views Count*/
+function wpreact_post_views_counter(WP_REST_Request $request)
+{
+    $field_name = 'post_views';
+    $current_views = get_field($field_name, $request['id']);
+    $updated_views = $current_views + 1;
+    $post_views = update_field($field_name, $updated_views, $request['id']);
+
+    return $post_views;
 }
 
 /**

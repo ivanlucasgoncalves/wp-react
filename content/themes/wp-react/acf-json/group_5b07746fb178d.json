@@ -1,36 +1,13 @@
 {
-    "key": "group_5b0530eac5021",
-    "title": "Post Info",
+    "key": "group_5b07746fb178d",
+    "title": "Post Views",
     "fields": [
         {
-            "key": "field_5b0531129b20e",
-            "label": "Love it",
-            "name": "loves_count",
-            "type": "number",
-            "instructions": "Showing how many people loves the post.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": 0,
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "min": "",
-            "max": "",
-            "step": "",
-            "readonly": 0,
-            "disabled": 0
-        },
-        {
-            "key": "field_5b0779bb18dc9",
-            "label": "Views",
+            "key": "field_5b077474c1560",
+            "label": "",
             "name": "post_views",
             "type": "number",
-            "instructions": "Showing post views.",
+            "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -59,12 +36,12 @@
         ]
     ],
     "menu_order": 0,
-    "position": "side",
+    "position": "normal",
     "style": "default",
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1527216647
+    "modified": 1527215249
 }

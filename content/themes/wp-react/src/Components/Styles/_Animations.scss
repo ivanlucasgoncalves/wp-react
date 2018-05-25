@@ -1,0 +1,38 @@
+
+//Rotate
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(0.6);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  } 
+}
+
+//Pulse
+@keyframes pulse {
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+//Scale Fade
+@keyframes scaleFade {
+	50% { 
+		opacity: 1;
+		transform: scale(1);
+	}
+	100% {
+		opacity: 0;
+		transform: scale(1.8);
+	}
+}

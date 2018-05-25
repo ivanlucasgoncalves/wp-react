@@ -4,12 +4,30 @@ import { Link } from 'react-router-dom';
 import TagsList from './Blog/TagsList';
 
 export default class ContentBlog extends React.Component {
+  constructor(props){
+    super(props);
+    
+    this.handlePostView = this.handlePostView.bind(this);
+  }
+  handlePostView(event){
+    const { id } = this.props.post;
+
+    fetch(WPReactSettings.URL.api + "/post_views/" + id, {
+      method: 'POST'
+    }).then(response => {
+        if(response.ok){
+          return response.json();
+        }
+        throw new Error('Request Failed!');
+      }, networkError => console.log(networkError.message)
+    );
+  }
   renderPosts(){
-    const { id, title, slug, excerpt, featured_image_src, author_name, author_avatar, published_date, tags_post, love_it, comments_number, content } = this.props.post;
+    const { id, title, slug, excerpt, featured_image_src, author_name, author_avatar, published_date, tags_post, views, love_it, comments_number, content } = this.props.post;
     return(
       <article id={`post-${id}`} className="col-posts">
         {featured_image_src && 
-        <Link to={`blog/${slug}`}>
+        <Link to={`blog/${slug}`} onClick={this.handlePostView}>
           <div className="img-blog">
             {featured_image_src ? <img src={featured_image_src} alt={title.rendered} /> : null}
           </div>
@@ -24,10 +42,16 @@ export default class ContentBlog extends React.Component {
             {author_name && <span className="entry-author_name">{author_name}</span>}
             {published_date && <span className="entry-date">{published_date}</span>}
           </div>
-          {title && <h3><Link to={`blog/${slug}`}>{title.rendered}</Link></h3>}
+          {title && <h3><Link to={`blog/${slug}`} onClick={this.handlePostView}>{title.rendered}</Link></h3>}
           {excerpt && <div dangerouslySetInnerHTML={{ __html: excerpt.rendered }}  />}
           <div className="foot-blg-list">
-            <Link to={`blog/${slug}`} className="read-more">Read more...</Link>
+            <div className="view-count">
+              <svg width="24" height="24" viewBox="0 0 511.99 511.99" >
+            		<path d="m510.1 249.94c-4.032-5.867-100.93-143.28-254.1-143.28-131.44 0-248.56 136.62-253.48 142.44-3.349 3.968-3.349 9.792 0 13.781 4.928 5.824 122.05 142.44 253.48 142.44s248.55-136.62 253.48-142.44c3.094-3.669 3.371-8.981 0.619-12.949zm-254.1 134.06c-105.36 0-205.55-100.48-231-128 25.408-27.541 125.48-128 231-128 123.28 0 210.3 100.33 231.55 127.42-24.534 26.645-125.29 128.58-231.55 128.58z"/>
+            		<path d="m256 170.66c-47.061 0-85.333 38.272-85.333 85.333s38.272 85.333 85.333 85.333 85.333-38.272 85.333-85.333-38.272-85.333-85.333-85.333zm0 149.33c-35.285 0-64-28.715-64-64s28.715-64 64-64 64 28.715 64 64-28.715 64-64 64z"/>
+              </svg>
+              <span>{views}</span>
+            </div>
             <div className="inf-post">
               <div className="love-it">
                 <svg width="19" height="19" viewBox="0 0 490.4 490.4">
@@ -49,7 +73,6 @@ export default class ContentBlog extends React.Component {
     );
   }
   render(){
-    console.log(this.props.post)
     return(
       <div className="col">
         {
