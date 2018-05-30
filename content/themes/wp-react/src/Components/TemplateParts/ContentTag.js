@@ -1,19 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import TagsList from './TagsList';
+import TagsList from './Blog/TagsList';
 
-export default class RelatedPostsList extends React.Component {
+export default class ContentTag extends React.Component {
   renderTagList = () => {
-    const { tags_post } = this.props.relatedpost;
+    const { tags_post } = this.props.tag;
     return(
       <div className="tags">{tags_post.map(tag =>
         <TagsList key={tag.term_id} tag={tag} />)}
       </div>
     )
-  }
+  } 
   handlePostView = async () => {
-    const { id } = this.props.relatedpost;
+    const { id } = this.props.tag;
     try {
     const response = await fetch(WPReactSettings.URL.api + "/post_views/" + id, {
   			method: 'POST'
@@ -28,12 +28,12 @@ export default class RelatedPostsList extends React.Component {
     }
   }
   render(){
-    const { id, title, featured_image_src, slug, excerpt, author_name, author_avatar, published_date, views, love_it, comments_number } = this.props.relatedpost;
+    const { id, title, featured_image_src, slug, excerpt, author_name, author_avatar, published_date, views, love_it, comments_number } = this.props.tag;
     return(
       <div className="col">
         <article id={`post-${id}`} className="col-posts">
           {featured_image_src && 
-          <Link to={slug} onClick={this.handlePostView}>
+          <Link to={`/blog/${slug}`} onClick={this.handlePostView}>
             <div className="img-blog">
               {featured_image_src ? <img src={featured_image_src} /> : null}
             </div>
@@ -47,7 +47,7 @@ export default class RelatedPostsList extends React.Component {
               {author_name && <span className="entry-author_name">{author_name}</span>}
               {published_date && <span className="entry-date">{published_date}</span>}
             </div>
-            {title && <h3><Link to={slug} onClick={this.handlePostView}>{title}</Link></h3>}
+            {title && <h3><Link to={`/blog/${slug}`} onClick={this.handlePostView}>{title}</Link></h3>}
             {excerpt && <p dangerouslySetInnerHTML={{ __html: excerpt }}  />}
             <div className="foot-blg-list">
               <div className="view-count">

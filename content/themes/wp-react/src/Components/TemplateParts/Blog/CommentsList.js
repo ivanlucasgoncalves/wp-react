@@ -3,13 +3,23 @@ import React from 'react';
 import Loader from '../Loader';
 
 export default class CommentsList extends React.Component {
-  constructor(props){
-    super(props);
-    
-    this.state = {
-      comments: [],
-      isLoadingComments: true
-    }
+  state = {
+    comments: [],
+    isLoadingComments: true
+  }
+  componentWillUnmount() {
+    this.setComments = null;
+  }
+  componentDidMount(){
+    this.setComments();
+  }
+  setComments(){
+    this.fetchComments().then(response => {
+      this.setState({
+        comments: response,
+        isLoadingComments: false
+      });
+    })
   }
   getComments(){
     {
@@ -30,36 +40,24 @@ export default class CommentsList extends React.Component {
       })
     }
   }
-  componentWillUnmount() {
-    this.setComments = null;
-  }
-  componentDidMount(){
-    this.setComments();
-  }
-  setComments(){
-    this.fetchComments().then(response => {
-      this.setState({
-        comments: response,
-        isLoadingComments: false
-      });
-    })
-  }
-  fetchComments(){
+  fetchComments = async () => {
     const { postID } = this.props;
-    return fetch(WPReactSettings.URL.api + "/comments?post=" + postID).then(response => {
+    try {
+      const response = await fetch(WPReactSettings.URL.api + "/comments?post=" + postID);
       if(response.ok){
-        return response.json();
+        const jsonResponse = await response.json();
+        return jsonResponse.map(comment => ({
+          id: comment.id,
+          author_name: comment.author_name,
+          author_avatar_urls: comment.author_avatar_urls,
+          published_comment: comment.published_comment,
+          content: comment.content.rendered
+        }));
       }
-      throw new Error ('Request Failed');
-    }, networkError => console.log(networkError.message)).then(jsonResponse => {
-      return jsonResponse.map(comment => ({
-        id: comment.id,
-        author_name: comment.author_name,
-        author_avatar_urls: comment.author_avatar_urls,
-        published_comment: comment.published_comment,
-        content: comment.content.rendered
-      }));
-    });
+      throw new Error('Request Failed');
+    } catch(error) {
+      console.log(error);
+    }
   }
   render(){
     return(

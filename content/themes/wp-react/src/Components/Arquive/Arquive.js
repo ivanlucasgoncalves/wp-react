@@ -1,19 +1,14 @@
 import React from 'react';
 
+import Loader from '../TemplateParts/Loader';
 import Post from '../Post/Post';
 import TopHeader from '../TemplateParts/Blog/TopHeader';
-import Loader from '../TemplateParts/Loader';
-import WPReact from '../../Util/WPReact';
 
 export default class Arquive extends React.Component {
-  constructor(props) {
-    super(props);
-    
-    this.state = {
-      posts: [],
-      page: 0,
-      isLoading: true
-    }
+  state = {
+    posts: [],
+    page: 0,
+    isLoading: true
   }
   componentWillUnmount(){
     this.getPosts = null;
@@ -22,7 +17,7 @@ export default class Arquive extends React.Component {
     this.getPosts();
   }
   getPosts(){
-    WPReact.fetchPosts().then(response => {
+    this.fetchPosts().then(response => {
       this.setState({
         posts: response,
         page: this.state.page + 1,
@@ -30,21 +25,28 @@ export default class Arquive extends React.Component {
       });
     });
   }
+  fetchPosts = async () => {
+    try{
+      const response = await fetch(WPReactSettings.URL.api + "/posts");
+      if(response.ok) {
+        const jsonResponse = await response.json();
+        return jsonResponse;
+      }
+      throw new Error('Request Failed');
+    } catch(error) {
+      console.log(error);
+    }
+  }
   render(){
+    const { isLoading, posts } = this.state;
+    if(isLoading) return <Loader />;
+    
     return(
       <main>
-      {this.state.isLoading ? (
+        <TopHeader />
         <div className="cntr">
-          <Loader />
+          <Post posts={this.state.posts} />
         </div>
-        ) : (
-        <div>
-          <TopHeader />
-          <div className="cntr">
-            <Post posts={this.state.posts} />
-          </div>
-        </div>
-      )}
       </main>
     );
   }

@@ -1,12 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-export default class TagsList extends React.Component {
-  render(){
-    const { name, slug } = this.props.tag;
-    return(
-      <span className={`tag-${slug}`}>
-        {name}
-      </span>
-    );
-  }
+
+const TagsList = props => {
+  const { term_id, name, slug } = props.tag;
+  return(
+    <Link to={WPReactSettings.path + `tag/${slug}`} className={`tag-${slug}`}>
+      {name}
+    </Link>
+  );
 }
+
+export default TagsList;

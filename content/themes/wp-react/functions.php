@@ -171,6 +171,11 @@ function wpreact_register_fields()
         'methods' => array('GET','POST'),
         'callback' => 'wpreact_post_views_counter',
     ));
+    // Add Tags in Post
+    register_rest_route('wp/v2', '/tags_in_post/(?P<slug>[a-zA-Z0-9-]+)', array(
+        'methods' => 'GET',
+        'callback' => 'wpreact_tags_in_post',
+    ));
 }
 add_action('rest_api_init', 'wpreact_register_fields');
 
@@ -212,25 +217,25 @@ function wpreact_excerpt_length($length)
 }
 add_filter('excerpt_length', 'wpreact_excerpt_length');
 
-function wpreact_next_post($object, $field_name, $request)
+function wpreact_next_post()
 {
     $next_post = get_next_post();
     return $next_post;
 }
 
-function wpreact_previous_post($object, $field_name, $request)
+function wpreact_previous_post()
 {
     $previous_post = get_previous_post();
     return $previous_post;
 }
 
-function wpreact_tags($object, $field_name, $request)
+function wpreact_tags()
 {
     $tags = get_the_tags();
     return $tags;
 }
 
-function wpreact_comments_number($object, $field_name, $request)
+function wpreact_comments_number()
 {
     $comments_number = get_comments_number('0', '1', '%');
     return $comments_number;
@@ -259,6 +264,7 @@ function wpreact_related_posts($object, $field_name, $request)
             $postsrelated[] = array( //Creating an array with all fiels for Related Posts
               'id' => get_the_ID(),
               'title' => get_the_title(),
+              'tags_post' => get_the_tags(),
               'author_name' => get_the_author_meta('display_name'),
               'author_avatar' => get_avatar_url(get_the_ID(), array('size' => 56)),
               'featured_image_src' => get_the_post_thumbnail_url(get_the_ID(), 'post-blog'),
@@ -315,6 +321,41 @@ function wpreact_post_views_counter(WP_REST_Request $request)
     $post_views = update_field($field_name, $updated_views, $request['id']);
 
     return $post_views;
+}
+
+function wpreact_tags_in_post($data)
+{
+    $slug = $data['slug'];
+    $idObj = get_term_by('slug', $slug, 'post_tag');
+    $id = $idObj->term_id;
+    
+    $args = array(
+      'tag__in' => $id,
+      'caller_get_posts'=> 1,
+    );
+    $posts_array = get_posts($args);
+    
+    //Querying posts
+    $allposts = new WP_Query($args);
+    while ($allposts -> have_posts()) {
+        $allposts -> the_post();
+        $taginposts[] = array( //Creating an array with all fiels for Related Posts
+          'id' => get_the_ID(),
+          'title' => get_the_title(),
+          'tags_post' => get_the_tags(),
+          'author_name' => get_the_author_meta('display_name'),
+          'author_avatar' => get_avatar_url(get_the_ID(), array('size' => 56)),
+          'featured_image_src' => get_the_post_thumbnail_url(get_the_ID(), 'post-blog'),
+          'slug' => get_post_field('post_name'),
+          'excerpt' => get_the_excerpt(),
+          'comments_number' => get_comments_number('0', '1', '%'),
+          'love_it' => get_field('loves_count'),
+          'views' => get_field('post_views'),
+          'published_date' => get_the_date('F j, Y')
+        );
+    }
+    return $taginposts;
+    wp_reset_query();
 }
 
 /**

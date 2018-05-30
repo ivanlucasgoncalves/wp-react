@@ -63,10 +63,10 @@ article.col-posts {
   //Tags
   .tags {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 25px;
+    left: 25px;
     z-index: 1;
-    span {
+    a {
       display: inline-block;
       border-radius: 15px;
       font-size: 10px;
@@ -78,7 +78,7 @@ article.col-posts {
       text-transform: uppercase;
       text-decoration: none;
       margin-right: 5px;
-      transition: all 0.25s ease;
+      transition: all 0.2s ease;
       &.tag-funny-news {
         background-color: #ff0f34;
       }
@@ -87,6 +87,9 @@ article.col-posts {
       }
       &.tag-viral {
         background-color: #292b2c;
+      }
+      &:hover {
+        transform: translateY(-3px);
       }
     }
   }

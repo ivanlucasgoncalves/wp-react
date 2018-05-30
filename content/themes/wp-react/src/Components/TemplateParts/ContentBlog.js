@@ -4,23 +4,20 @@ import { Link } from 'react-router-dom';
 import TagsList from './Blog/TagsList';
 
 export default class ContentBlog extends React.Component {
-  constructor(props){
-    super(props);
-    
-    this.handlePostView = this.handlePostView.bind(this);
-  }
-  handlePostView(event){
+  handlePostView = async () => {
     const { id } = this.props.post;
-
-    fetch(WPReactSettings.URL.api + "/post_views/" + id, {
-      method: 'POST'
-    }).then(response => {
-        if(response.ok){
-          return response.json();
-        }
-        throw new Error('Request Failed!');
-      }, networkError => console.log(networkError.message)
-    );
+    try {
+    const response = await fetch(WPReactSettings.URL.api + "/post_views/" + id, {
+  			method: 'POST'
+      });
+  		if(response.ok){
+        const jsonResponse = await response.json();
+        return jsonResponse;
+      }
+      throw new Error('Request Failed');
+    } catch (error) {
+      console.log(error);
+    }
   }
   renderPosts(){
     const { id, title, slug, excerpt, featured_image_src, author_name, author_avatar, published_date, tags_post, views, love_it, comments_number, content } = this.props.post;

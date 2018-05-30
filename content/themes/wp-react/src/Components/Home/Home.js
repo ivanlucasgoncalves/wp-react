@@ -3,12 +3,8 @@ import React from 'react';
 import Loader from '../TemplateParts/Loader';
 
 export default class Home extends React.Component {
-  constructor(props){
-    super(props);
-    
-    this.state = {
-      isLoading: true
-    }
+  state = {
+    isLoading: true
   }
   componentWillUnmount(){
     this.renderHome = null;
@@ -25,11 +21,14 @@ export default class Home extends React.Component {
     );
   }
   render(){
+    const { isLoading } = this.state;
+    if(isLoading) return <Loader />;
+    
     return(
       <main>
-        {this.state.isLoading ?
-          <Loader />
-        : this.renderHome()}
+        {
+          this.renderHome()
+        }
       </main>
     );
   }

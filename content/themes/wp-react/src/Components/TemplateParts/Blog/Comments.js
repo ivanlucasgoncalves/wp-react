@@ -12,16 +12,14 @@ export default class Comments extends React.Component {
       email: ''
     }
     
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.baseState = this.state; // preserve the initial state in a new object
   }
-  handleInputChange(event){
+  handleInputChange = event => {
     this.setState({
       [event.target.name]: event.target.value,
     })
   }
-  handleSubmit(event){
+  handleSubmit = event => {
     event.preventDefault();
     if(!this.state.comment || !this.state.name || !this.state.email) {
       console.log('Please fill the form!');
@@ -30,30 +28,32 @@ export default class Comments extends React.Component {
       this.resetForm();
     }
   }
-  resetForm(){
+  resetForm = () => {
     this.setState(this.baseState);
   }
-  postComment(){
+  postComment = async () => {
     const { postID } = this.props;
     const { comment, name, email } = this.state;
-    
-    fetch(WPReactSettings.URL.api + "/comments?post=" + postID, {
-      method: 'POST',
-      headers: {
-       "Content-type": "application/json"
-      },
-      body: JSON.stringify({
-        author_name: name,
-        author_email: email,
-        content: comment
-      })
-    }).then(response => {
-        if(response.ok){
-          return response.json();
-        }
-        throw new Error('Request Failed!');
-      }, networkError => console.log(networkError.message)
-    );
+    try {
+      const response = await fetch(WPReactSettings.URL.api + "/comments?post=" + postID, {
+        method: 'POST',
+        headers: {
+         "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+          author_name: name,
+          author_email: email,
+          content: comment
+        })
+      });
+      if(response.ok){
+        const jsonResponse = await response.json();
+        return jsonResponse;
+      }
+      throw new Error('Request Failed!');
+    } catch(error) {
+      console.log(error);
+    }
   }
   render(){
     const { postID } = this.props;
