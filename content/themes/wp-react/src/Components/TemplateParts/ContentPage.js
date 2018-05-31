@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default class ContentPage extends React.Component {
-  renderPage(){
-    const { id, title, content } = this.props.page;
+const ContentPage = props => {
+  const renderPage = () => {
+    const { id, title, content } = props.page;
     return(
       <div className="cntr">
         <article id={`page-${id}`}>
@@ -14,18 +14,18 @@ export default class ContentPage extends React.Component {
       </div>
     );
   }
-  render(){
-    return(
-      <div>
-        <div className="top-header">
-          <div className="cntr">
-            <h1>Sample Page</h1>
-          </div>
+  return(
+    <div>
+      <div className="top-header">
+        <div className="cntr">
+          <h1>Sample Page</h1>
         </div>
-        {
-          this.renderPage()
-        }
       </div>
-    );
-  }
+      {
+        renderPage()
+      }
+    </div>
+  );
 }
+
+export default ContentPage;

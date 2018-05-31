@@ -32,33 +32,30 @@ export default class Tags extends React.Component {
     let url = window.location.href.split('/');
     let slug = url.pop();
     
-    try{
+    try {
       const response = await fetch(WPReactSettings.URL.api + "/tags_in_post/" + slug);
       if(response.ok){
         const jsonResponse = await response.json();
         return jsonResponse;
       }
       throw new Error('Request Failed');
-    } catch(error){
+    } catch(error) {
       console.log(error);
     }
   }
   render(){
+    const { isLoading, post_tags } = this.state;
+    if(isLoading) return <Loader />;
+    
     return(
       <main>
-      {this.state.isLoading ? (
-        <div className="cntr">
-          <Loader />
-        </div>
-        ) : (
         <div className="cntr">
           <div className="row">
             {
-              this.state.post_tags.map(tag => <ContentTag key={tag.id} tag={tag}/>)
+              post_tags.map(tag => <ContentTag key={tag.id} tag={tag}/>)
             }
           </div>
         </div>
-      )}
       </main>
     );
   }

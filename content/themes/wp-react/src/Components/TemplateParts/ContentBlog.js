@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 import TagsList from './Blog/TagsList';
 
-export default class ContentBlog extends React.Component {
-  handlePostView = async () => {
-    const { id } = this.props.post;
+const ContentBlog = props => {
+  const handlePostView = async () => {
+    const { id } = props.post;
     try {
     const response = await fetch(WPReactSettings.URL.api + "/post_views/" + id, {
   			method: 'POST'
@@ -19,12 +19,12 @@ export default class ContentBlog extends React.Component {
       console.log(error);
     }
   }
-  renderPosts(){
-    const { id, title, slug, excerpt, featured_image_src, author_name, author_avatar, published_date, tags_post, views, love_it, comments_number, content } = this.props.post;
+  const renderPosts = () => {
+    const { id, title, slug, excerpt, featured_image_src, author_name, author_avatar, published_date, tags_post, views, love_it, comments_number, content } = props.post;
     return(
       <article id={`post-${id}`} className="col-posts">
         {featured_image_src && 
-        <Link to={`blog/${slug}`} onClick={this.handlePostView}>
+        <Link to={`blog/${slug}`} onClick={handlePostView}>
           <div className="img-blog">
             {featured_image_src ? <img src={featured_image_src} alt={title.rendered} /> : null}
           </div>
@@ -39,7 +39,7 @@ export default class ContentBlog extends React.Component {
             {author_name && <span className="entry-author_name">{author_name}</span>}
             {published_date && <span className="entry-date">{published_date}</span>}
           </div>
-          {title && <h3><Link to={`blog/${slug}`} onClick={this.handlePostView}>{title.rendered}</Link></h3>}
+          {title && <h3><Link to={`blog/${slug}`} onClick={handlePostView}>{title.rendered}</Link></h3>}
           {excerpt && <div dangerouslySetInnerHTML={{ __html: excerpt.rendered }}  />}
           <div className="foot-blg-list">
             <div className="view-count">
@@ -69,13 +69,13 @@ export default class ContentBlog extends React.Component {
       </article>
     );
   }
-  render(){
-    return(
-      <div className="col">
-        {
-          this.renderPosts()
-        }
-      </div>
-    );
-  }
+  return(
+    <div className="col">
+      {
+        renderPosts()
+      }
+    </div>
+  );
 }
+
+export default ContentBlog;

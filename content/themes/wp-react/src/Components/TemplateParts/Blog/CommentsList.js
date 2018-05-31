@@ -23,7 +23,8 @@ export default class CommentsList extends React.Component {
   }
   getComments(){
     {
-      return this.state.comments.map(comment => {
+      const { comments } = this.state;
+      return comments.map(comment => {
         const { id, author_name, author_avatar_urls, published_comment, content } = comment;
         return(
           <div key={id} className="comment">
@@ -60,10 +61,11 @@ export default class CommentsList extends React.Component {
     }
   }
   render(){
+    const { isLoadingComments, comments } = this.state;
     return(
       <div className="cntr entry-comments">
         <h3>Responses</h3>
-        {this.state.isLoadingComments ?
+        {isLoadingComments ?
           (
           <div id="loader-comment">
             <div className="loader-inner ball-clip-rotate-multiple">
@@ -72,7 +74,7 @@ export default class CommentsList extends React.Component {
             </div>
           </div>
           ) : (
-            this.state.comments.length > 0 ? this.getComments() : <p>No Comments so far.</p>
+            comments.length > 0 ? this.getComments() : <p>No Comments so far.</p>
           )}
       </div>
     );

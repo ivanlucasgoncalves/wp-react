@@ -2,16 +2,11 @@ import React from 'react';
 
 import ContentSingle from '../TemplateParts/ContentSingle';
 import Loader from '../TemplateParts/Loader';
-import WPReact from '../../Util/WPReact';
 
 export default class Single extends React.Component {
-  constructor(props){
-    super(props);
-    
-    this.state = {
-      post: [],
-      isLoading: true
-    }
+  state = {
+    post: [],
+    isLoading: true
   }
   componentWillUnmount() {
     this.getSingle = null;
@@ -26,19 +21,36 @@ export default class Single extends React.Component {
     }
   }
   getSingle(){
-    WPReact.fetchSingle().then(response => {
+    this.fetchSingle().then(response => {
       this.setState({
         post: response,
         isLoading: false
       });
     });
   }
+  fetchSingle = async () => {
+    let url = window.location.href.split('/');
+    let slug = url.pop();
+    try {
+      const response = await fetch(WPReactSettings.URL.api + "/posts?slug=" + slug + "&_embed");
+      if(response.ok){
+        const jsonResponse = await response.json();
+        return jsonResponse[0];
+      }
+      throw new Error('Request Failed!');
+    } catch(error) {
+      console.log(error);
+    }
+  }
   render(){
+    const { isLoading, post } = this.state;
+    if(isLoading) return <Loader />;
+    
     return(
       <main>
-      {this.state.isLoading ? 
-        <Loader /> 
-        : <ContentSingle post={this.state.post} />}
+        {
+          <ContentSingle post={post} />
+        }
       </main>
     );
   }

@@ -2,16 +2,11 @@ import React from 'react';
 
 import ContentPage from '../TemplateParts/ContentPage';
 import Loader from '../TemplateParts/Loader';
-import WPReact from '../../Util/WPReact';
 
 export default class Page extends React.Component {
-  constructor(props){
-    super(props);
-    
-    this.state = {
-      pages: [],
-      isLoading: true
-    }
+  state = {
+    pages: [],
+    isLoading: true
   }
   componentWillUnmount(){
     this.getPage = null;
@@ -20,19 +15,35 @@ export default class Page extends React.Component {
     this.getPage();
   }
   getPage(){
-    WPReact.fetchPages().then(response => {
+    this.fetchPages().then(response => {
       this.setState({
         pages: response,
         isLoading: false
       });
     })
   }
+  fetchPages = async () => {
+    let url = window.location.href.split('/');
+    let slug = url.pop();
+    try {
+      const response = await fetch(WPReactSettings.URL.api + "/pages?slug=" + slug);
+      if(response.ok){
+        const jsonResponse = await response.json();
+        return jsonResponse;
+      }
+    } catch(error) {
+      console.log(error);
+    }
+  }
   render(){
+    const { isLoading, pages } = this.state;
+    if(isLoading) return <Loader />;
+    
     return(
       <main>
-      {this.state.isLoading ? 
-        <Loader /> 
-        : this.state.pages.map(page => <ContentPage key={page.id} page={page}/>)}
+        {
+          pages.map(page => <ContentPage key={page.id} page={page}/>)
+        }
       </main>
     );
   }
