@@ -16,7 +16,7 @@ export default class Home extends React.Component {
   renderHome(){
     return(
       <div className="cntr">
-        <h1>Home</h1>
+        
       </div>
     );
   }

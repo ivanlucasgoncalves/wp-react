@@ -1,4 +1,5 @@
 import React from 'react';
+import LazyLoad from 'react-lazy-load';
 
 import PostNavigation from './Blog/PostNavigation';
 import RelatedPosts from './Blog/RelatedPosts';
@@ -6,7 +7,7 @@ import Comments from './Blog/Comments';
 
 const ContentSingle = props => {
   const handleLoveIt = async () => {
-    const { id } = this.props.post;
+    const { id } = props.post;
     const btn = document.getElementById('btn-love-it');
     btn.classList.add('love-isloading');
     try {
@@ -30,6 +31,7 @@ const ContentSingle = props => {
   }
   const renderSingle = () => {
     const { id, title, excerpt, featured_image_src, author_name, author_avatar, published_date, content, _embedded } = props.post;
+    console.log()
     return(
       <article id={`post-${id}`} className="single">
         <div className="cntr">
@@ -52,7 +54,9 @@ const ContentSingle = props => {
         </div>
         {featured_image_src && 
         <div className="cntr wide full-thumbnail">
-      		<img src={_embedded['wp:featuredmedia'][0].media_details.sizes.large.source_url} />
+          <LazyLoad height={560}>
+      		  <img src={_embedded['wp:featuredmedia'][0].media_details.sizes.large.source_url} />
+          </LazyLoad>
       	</div>}
         {content &&
         <div className="cntr entry-content">

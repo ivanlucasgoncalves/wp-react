@@ -13,7 +13,7 @@
         <title>WP React</title>
         <?php wp_head(); ?>
     </head>
-    <body <?php body_class(); ?>>
+    <body>
         <div id="app"></div>
         <?php wp_footer(); ?>
     </body>

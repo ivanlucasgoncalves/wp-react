@@ -15,7 +15,7 @@ const ContentPage = props => {
     );
   }
   return(
-    <div>
+    <div className="ctn-page">
       <div className="top-header">
         <div className="cntr">
           <h1>Sample Page</h1>

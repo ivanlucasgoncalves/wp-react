@@ -1,0 +1,12 @@
+{
+	"name": "ivanlucas/wpreact",
+	"authors": [
+		{
+			"name": "Ivan Lucas",
+			"email": "ivanlucasgoncalves@gmail.com"
+		}
+	],
+	"require": {
+		"vlucas/phpdotenv": "^2.5"
+	}
+}

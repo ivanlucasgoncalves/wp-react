@@ -5,6 +5,14 @@
 header{
   border-bottom: 1px solid #eee;
   padding: 40px 0;
+  .cntr {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .type-of-logo {
+    color: #4a4a4a;
+  }
   ul{
     li{
       display: inline-block;

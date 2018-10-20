@@ -28,13 +28,10 @@ function wp_react_scripts()
     if (!is_admin()) {
         wp_deregister_script('jquery');
         wp_deregister_script('wp-embed');
-        //wp_enqueue_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js', false, null, true);
-        // Add livereload for local access | DO NOT CHANGE
-        wp_enqueue_script('livereload', 'http://localhost:35729/livereload.js?snipver=1', null, false, true);
     }
     wp_enqueue_style('wpreact-style', get_stylesheet_uri());
     wp_enqueue_style('style-css', get_template_directory_uri() . '/dist/css/style.min.css', false, filemtime(get_stylesheet_directory() . '/dist/css/style.min.css'));
-    wp_enqueue_script('script-js', get_template_directory_uri() . '/dist/app.min.js', array(), filemtime(get_stylesheet_directory().'/dist/app.min.js'), true);
+    wp_enqueue_script('script-js', get_template_directory_uri() . '/dist/app.min.js', false, filemtime(get_stylesheet_directory().'/dist/app.min.js'), true);
     
     $url = trailingslashit(home_url());
     $path = trailingslashit(parse_url($url, PHP_URL_PATH));
@@ -392,3 +389,13 @@ function filter_rest_allow_anonymous_comments()
     return true;
 }
 add_filter('rest_allow_anonymous_comments', 'filter_rest_allow_anonymous_comments');
+
+/**
+* Handles JavaScript detection.
+*
+* Adds a js class to the root <html> element when JavaScript is detected.
+*/
+function javascript_detection() {
+ echo "<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>\n";
+}
+add_action( 'wp_head', 'javascript_detection', 0 );
